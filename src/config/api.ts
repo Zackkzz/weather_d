@@ -4,3 +4,4 @@ export const API_CONFIG = {
 }
 
 export const DEFAULT_CITY = 'Sydney';
+export const DEFAULT_FORECAST_DAYS = 4;

@@ -1,6 +1,8 @@
 import axios from "axios";
 import {API_CONFIG} from '../src/config/api';
-import type { WeatherData } from "../src/types/weather";
+import type { ForecastDay, WeatherData } from "../src/types/weather";
+
+const BASE_URL = API_CONFIG.WEATHER_API_BASE_URL;
 
 /**
  * Get current weather information
@@ -10,14 +12,12 @@ import type { WeatherData } from "../src/types/weather";
 export async function getCurrentWeather(city: string): Promise<WeatherData> {
     try {
         const apiKey = API_CONFIG.WEATHER_API_KEY;
-        const BASE_URL = API_CONFIG.WEATHER_API_BASE_URL;
-        console.log('API Key:', import.meta.env.VITE_WEATHER_API_KEY);
         if (!apiKey) {
-            console.warn('No API key configured!');
-            return getMockWeatherData(city);
+            throw new Error("No API key found!");
         }
 
         //request for current weather
+        console.log("data fetching......");
         const response = await axios.get<WeatherData>(
             `${BASE_URL}/current.json`,
             {
@@ -28,11 +28,48 @@ export async function getCurrentWeather(city: string): Promise<WeatherData> {
                 },
             }
         );
-        
-        return response.data;
+        console.log("Current weather data fetch successfully.");
+        const weatherData: WeatherData = {
+            current: response.data.current,
+            location: response.data.location,
+            forecast: {
+                forecastday: []
+            }
+        }
+        return weatherData;
     } catch(error) {
         console.log('Failed to fetch weather data:', error)
         return getMockWeatherData(city);
+    }
+}
+
+export async function getForecastWeather(city: string, days: number): Promise<ForecastDay[]> {
+    try {
+        const API_KEY = API_CONFIG.WEATHER_API_KEY;
+        
+        
+        if (!API_KEY) {
+            throw new Error("No API key found!");
+        }
+
+        console.log("data fetching......");
+        const response = await axios.get<WeatherData>(
+            `${BASE_URL}/forecast.json`,
+            {
+                params: {
+                    key: API_KEY,
+                    q: city,
+                    days: days,
+                    lang: 'en',
+                }
+            }
+        );
+        console.log("Forecast weather fetch successfully.");
+        // WeatherAPI returns WeatherData with forecast.forecastday array
+        return response.data.forecast?.forecastday || [];
+    } catch(e) {
+        console.log('Failed to fetch weather data:', e);
+        return [];
     }
 }
 
@@ -63,6 +100,9 @@ function getMockWeatherData(city: string): WeatherData {
         feelslike_c: 23,
         uv: 5,
         vis_km: 10,
+        },
+        forecast: {
+            forecastday: []
         },
     };
 }

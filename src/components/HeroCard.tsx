@@ -1,44 +1,16 @@
-import { useEffect, useState, useCallback } from "react";
 import type { WeatherData } from "../types/weather";
-import { getCurrentWeather } from "../../service/weatherAPI"
 
 interface WeatherHeroCardProps {
-    city: string;
+    weatherData: WeatherData | null;
+    loading: boolean;
+    error: string | null;
 }
 
 
-export function HeroCard({ city }: WeatherHeroCardProps) {
-    const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+export function HeroCard({ weatherData, loading, error }: WeatherHeroCardProps) {
+    
 
-    //function for fetching weather data.
-    const fetchWeather = useCallback(async () => {
-        if (!city.trim()) {
-            setError('Please enter a city name');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-
-        try {
-            const data = await getCurrentWeather(city);
-            setWeatherData(data);
-        } catch (error) {
-            setError('Failed to fetch weather information. Please try again later.');
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [city]);
-
-    //use useEffect to render data only when 'city' is changed.
-    useEffect(() => {
-        if (city) {
-            fetchWeather();
-        }
-    }, [city, fetchWeather]);
+    
 
     if (loading) {
         return (
@@ -52,12 +24,6 @@ export function HeroCard({ city }: WeatherHeroCardProps) {
         return (
             <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded text-center">
                 {error}
-                <button
-                    onClick={fetchWeather}
-                    className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                    Retry
-                </button>
             </div>
         );
     }

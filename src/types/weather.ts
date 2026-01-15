@@ -24,8 +24,8 @@ export interface WeatherData {
         uv: number;
         vis_km: number;
     };
-    forecast?: {
-        forecastday: ForecastDay[];
+    forecast: {
+        forecastday: ForecastDay[] | [];
     };
 }
 
