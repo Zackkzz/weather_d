@@ -56,24 +56,23 @@ export function App() {
 
             <SearchBar onSearch={handleSearch}/>
 
-            <div className="bg-white my-3 rounded-xl shadow-md w-auto basis-1/4 mx-auto px-10 py-5">
+            <div className="bg-white my-3 rounded-xl shadow-md w-auto basis-1/4 mx-auto px-10 py-5 hover:scale-105 transition-all duration-300">
                 <HeroCard weatherData={weatherData} loading={loading} error={error}/>
             </div>
+            {/* forecast weather below */}
             <div className="flex flex-nowrap flex-row space-x-2.5">
-                <div className="bg-white p-6 rounded-xl shadow-md size-auto basis-1/4">
-                <Card weatherData={weatherData}/>
-                </div>
-                <div className="bg-white p-6 rounded-xl shadow-md size-auto basis-1/4">
-                    <Card weatherData={weatherData}/>
-                </div>
-                <div className="bg-white p-6 rounded-xl shadow-md size-auto basis-1/4">
-                    <Card weatherData={weatherData}/>
-                </div>
-                <div className="bg-white p-6 rounded-xl shadow-md size-auto basis-1/4">
-                    <Card weatherData={weatherData}/>
-                </div>
+                {weatherData?.forecast.forecastday.filter((f) => {
+                    const today = new Date().toISOString().split('T')[0];
+                    return f.date !== today;
+                }).map((forecastDay, index) => (
+                    <div 
+                    key={index} 
+                    className="bg-white p-6 rounded-xl shadow-md size-auto basis-1/4 hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <Card forecastDay={forecastDay}/>
+                    </div>
+                ))}
             </div>
-            
+            {/* forecast weather above */}
         </div>
     )
 }

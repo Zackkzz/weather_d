@@ -14,7 +14,7 @@ export function SearchBar({onSearch}: SearchBarProps) {
     }
     return (
         <div className="text-center">
-            <label for="cityNameInput" className="mr-3">City Name</label>
+            <label htmlFor="cityNameInput" className="mr-3">City Name</label>
             <form onSubmit={handleSubmit}>
                 <input
                     type='text'

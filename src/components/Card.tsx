@@ -1,23 +1,29 @@
-import type { ForecastDay, WeatherData } from "../types/weather";
+import type { ForecastDay } from "../types/weather";
 
 interface CardProps {
-    weatherData: WeatherData | null;
+    forecastDay: ForecastDay;
 }
-export function Card({ weatherData }: CardProps) {
 
-    if (weatherData === null) {
+const formatTime = (timeString: string) => {
+        try {
+            const date = new Date(timeString);
+            return date.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+            });
+        } catch {
+            return timeString;
+        }
+    };
+
+export function Card({ forecastDay }: CardProps) {
+
+    if (forecastDay === null) {
         console.log("no data");
         return <div>No data currently.</div>
     }
 
-    // Check if forecast data exists before accessing it
-    if (!weatherData.forecast || !weatherData.forecast.forecastday || weatherData.forecast.forecastday.length === 0) {
-        console.log("no forecast data.");
-        return <div>No forecast data available</div>;
-    }
-
-    const forecast: ForecastDay[] = weatherData.forecast.forecastday;
-    const data = forecast[0];
+    const data = forecastDay;
 
     // Additional safety check
     if (!data || !data.day) {
@@ -25,10 +31,13 @@ export function Card({ weatherData }: CardProps) {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
             <h2 className="text-black text-center font-normal">
                 Weather
             </h2>
+            <div className="text-center text-sm text-gray-600 mb-3">
+                {formatTime(data.date)}
+            </div>
             <div className="flex justify-center items-center mb-4">
                 <img
                     src={data.day.condition.icon} 
@@ -36,21 +45,18 @@ export function Card({ weatherData }: CardProps) {
                     className="w-16 h-16"
                 />
             </div>
-            <div className="text-left">
-                Temperature: {data.day.avgtemp_c}
-                <div className="inline mx-2">
-                    Feels like:
-                </div>
+            <div>
+                Avg: {data.day.avgtemp_c}°C
             </div>
             
             <div>
-                Humidity:
+                Humidity: {data.day.avghumidity}%
             </div>
             <div>
-                Wind:
+                Wind: {data.day.maxwind_kph}km/h
             </div>
-            <div>
-                condition:text
+            <div className="text-gray-600">
+                Min: {data.day.mintemp_c}°C
             </div>
         </div>
     )

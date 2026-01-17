@@ -1,5 +1,3 @@
-import './css/Nav.css'
-
 export function Nav() {
     return (
         <div>

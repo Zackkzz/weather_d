@@ -1,4 +1,5 @@
 import type { WeatherData } from "../types/weather";
+import { formatTime } from "../config/api";
 
 interface WeatherHeroCardProps {
     weatherData: WeatherData | null;
@@ -31,22 +32,6 @@ export function HeroCard({ weatherData, loading, error }: WeatherHeroCardProps) 
     if (!weatherData) {
         return null;
     }
-
-    const formatTime = (timeString: string) => {
-        try {
-            const date = new Date(timeString);
-            return date.toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
-        } catch {
-            return timeString;
-        }
-    };
 
     return (
         <div className="flex flex-col">
