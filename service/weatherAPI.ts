@@ -1,6 +1,6 @@
 import axios from "axios";
 import {API_CONFIG} from '../src/config/api';
-import type { ForecastDay, WeatherData } from "../src/types/weather";
+import { type SearchResult, type ForecastDay, type WeatherData } from "../src/types/weather";
 
 const BASE_URL = API_CONFIG.WEATHER_API_BASE_URL;
 
@@ -43,6 +43,12 @@ export async function getCurrentWeather(city: string): Promise<WeatherData> {
     }
 }
 
+/**
+ * 
+ * @param city City name
+ * @param days The number of days for forecast
+ * @returns An array of forecastDay
+ */
 export async function getForecastWeather(city: string, days: number): Promise<ForecastDay[]> {
     try {
         const API_KEY = API_CONFIG.WEATHER_API_KEY;
@@ -69,6 +75,35 @@ export async function getForecastWeather(city: string, days: number): Promise<Fo
         return response.data.forecast?.forecastday || [];
     } catch(e) {
         console.log('Failed to fetch weather data:', e);
+        return [];
+    }
+}
+
+export async function getSearchAutoComplete(input: string) {
+    try {
+        const API_KEY = API_CONFIG.WEATHER_API_KEY;
+        const BASE_URL = API_CONFIG.WEATHER_API_BASE_URL;
+
+        if (!API_KEY) {
+            throw new Error("No API_KEY found!");
+        }
+
+        console.log("data fetching......");
+        
+        const response = await axios.get<SearchResult[]>(
+            `${BASE_URL}/search.json`,
+            {
+                params: {
+                    key: API_KEY,
+                    q: input,
+                    lang: 'en',
+                }
+            }
+        );
+        
+        return response.data;
+    } catch(e) {
+        console.log("Failed to fetch SearchAutoComplete:", e);
         return [];
     }
 }

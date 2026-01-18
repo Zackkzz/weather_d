@@ -13,7 +13,7 @@ export function App() {
     const [error, setError] = useState<string | null>(null);
     const [input, setInput] = useState(DEFAULT_CITY);
 
-    const handleSearch = (search: string) => {
+    const handleSearch = async (search: string) => {
         setInput(search);
     }
 
@@ -60,13 +60,13 @@ export function App() {
                 <HeroCard weatherData={weatherData} loading={loading} error={error}/>
             </div>
             {/* forecast weather below */}
-            <div className="flex flex-nowrap flex-row space-x-2.5">
+            <div className="flex flex-wrap flex-row gap-2.5 justify-center">
                 {weatherData?.forecast.forecastday.filter((f) => {
                     const today = new Date().toISOString().split('T')[0];
                     return f.date !== today;
                 }).map((forecastDay, index) => (
                     <div 
-                    key={index} 
+                    key={index}
                     className="bg-white p-6 rounded-xl shadow-md size-auto basis-1/4 hover:scale-105 transition-all duration-300 cursor-pointer">
                         <Card forecastDay={forecastDay}/>
                     </div>

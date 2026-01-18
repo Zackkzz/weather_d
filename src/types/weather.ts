@@ -1,13 +1,6 @@
 // Weather data type definitions
 export interface WeatherData {
-    location: {
-        name: string;
-        country: string;
-        region?: string;
-        lat: number;
-        lon: number;
-        localtime: string;
-    };
+    location: Location;
     current: {
         temp_c: number;
         temp_f: number;
@@ -67,3 +60,20 @@ export interface StoredWeatherData {
     windSpeed: number;
 }
 
+export interface SearchResult {
+    lat: number;
+    lon: number;
+    name: string;
+    region: string;
+    country: string;
+    localtime: string;
+}
+
+export interface Location {
+    name: string;
+    country: string;
+    region?: string;
+    lat: number;
+    lon: number;
+    localtime: string;
+}
