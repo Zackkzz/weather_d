@@ -56,7 +56,7 @@ export function App() {
 
             <SearchBar onSearch={handleSearch}/>
 
-            <div className="bg-white my-3 rounded-xl shadow-md w-auto basis-1/4 mx-auto px-10 py-5 hover:scale-105 transition-all duration-300">
+            <div className="bg-white my-3 rounded-xl shadow-md w-1/2 basis-1/4 mx-auto px-10 py-5 hover:scale-105 transition-all duration-300">
                 <HeroCard weatherData={weatherData} loading={loading} error={error}/>
             </div>
             {/* forecast weather below */}

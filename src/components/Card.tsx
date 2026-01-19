@@ -48,15 +48,14 @@ export function Card({ forecastDay }: CardProps) {
             <div>
                 Avg: {data.day.avgtemp_c}°C
             </div>
-            
+            <div className="text-gray-600">
+                Min: {data.day.mintemp_c}°C
+            </div>
             <div>
                 Humidity: {data.day.avghumidity}%
             </div>
             <div>
                 Wind: {data.day.maxwind_kph}km/h
-            </div>
-            <div className="text-gray-600">
-                Min: {data.day.mintemp_c}°C
             </div>
         </div>
     )

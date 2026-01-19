@@ -73,7 +73,7 @@ export function SearchBar({onSearch}: SearchBarProps) {
                 />
                 {/* show suggestion bar below */}
                 {showSuggestions && (
-                    <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-[180px] overflow-y-auto scroll-smooth">
+                    <div className="absolute top-full left-195 z-10 mt-1 w-96  bg-white border border-gray-300 rounded-md shadow-lg max-h-[180px] overflow-y-auto scroll-smooth">
                         {isLoading 
                         ? (<div className="p-2 text-center text-gray-500">Loading...</div>) 
                         : suggestions.length === 0 
